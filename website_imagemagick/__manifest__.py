@@ -21,7 +21,7 @@
 
 {
     'name': 'Image: Imagemagick: Website',
-    'version': '14.0.0.0.0',
+    'version': '1.0',
     # Version ledger: 14.0 = Odoo version. 1 = Major. Non regressionable code. 2 = Minor. New features that are regressionable. 3 = Bug fixes
     'summary': 'Advanced Image handling',
     'category': 'Technical',
@@ -55,8 +55,8 @@ Advanced Image handling
     'data': [
         'website_imagemagick_data.xml',
         'security/ir.model.access.csv',
-        'views/snippet.xml',
-        'views/image_recipe.xml',
+        #'views/snippet.xml',
+        #'views/image_recipe.xml',
     ],
     'application': True,
     # 'installable': True,

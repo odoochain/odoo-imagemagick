@@ -21,7 +21,7 @@
 import base64
 from io import StringIO, BytesIO
 from odoo import models, fields, api, _
-from odoo.exceptions import except_orm, Warning, RedirectWarning
+from odoo.exceptions import RedirectWarning
 from odoo import http
 from odoo.http import request, STATIC_CACHE
 from datetime import datetime

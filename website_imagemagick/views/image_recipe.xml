@@ -168,6 +168,7 @@
     </data>
     <data>
         <!-- Inform server of Device Type for responsive recipe -->
+<!--
         <template id="assets_frontend" inherit_id="website.assets_frontend">
             <xpath expr="." position="inside">
                 <script type="text/javascript">
@@ -182,6 +183,7 @@
                 </script>
             </xpath>
         </template>
+-->
 
     </data>
 </odoo>
