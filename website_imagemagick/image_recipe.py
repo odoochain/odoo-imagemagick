@@ -139,7 +139,7 @@ class website_imagemagic(http.Controller):
 
     def placeholder(self, response):
         # ~ return request.env['website']._image_placeholder(response)
-        f = open(get_module_path('web') + '/static/src/img/placeholder.png', 'rb')
+        f = open(get_module_path('web') + '/static/img/placeholder.png', 'rb')
         # ~ asd = Image(file=f, format='PNG')
         response.mimetype = 'image/png'
         filename = 'placeholder.png'
