@@ -1,1 +1,1 @@
-from . import image_recipe
+from. import image_recipe

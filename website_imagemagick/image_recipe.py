@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Odoo, Open Source Enterprise Management Solution, third party addon
-#    Copyright (C) 2014-2017 Vertel AB (<http://vertel.se>).
+#   Odoo, Open Source Enterprise Management Solution, third party addon
+#   Copyright (C) 2014-2017 Vertel AB (<http://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -24,28 +24,26 @@ from odoo import models, fields, api, _
 from odoo.exceptions import RedirectWarning
 from odoo import http
 from odoo.http import request, STATIC_CACHE
-from datetime import datetime
 from odoo.modules import get_module_resource, get_module_path
+from datetime import datetime
 import werkzeug
 import pytz
 import re
 import hashlib
 import sys
 import traceback
-import codecs
 
 from .safeish_eval import safe_eval as eval
-import os
-from wand.image import Image
 from wand.display import display
 from wand.drawing import Drawing
 from wand.color import Color
 import subprocess
+import codecs
+import os
 import wand.api
 import ctypes
 import time
 import uuid
-import base64
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -63,7 +61,6 @@ class Image(Image):
 
 
 class website_imagemagic(http.Controller):
-
     # this controller will control url: /imagemagick/attachment_id/id/recipe_id or /imagemagick/attachment_id/ref/recipe_ref
     @http.route(['/imagemagick/<model("ir.attachment"):image>/id/<model("image.recipe"):recipe>',
                  '/imagemagick/<model("ir.attachment"):image>/ref/<string:recipe_id>'], type='http', auth="public", website=True)
@@ -75,7 +72,6 @@ class website_imagemagic(http.Controller):
         return request.registry['website']._image(
                 request.cr, request.uid, 'ir.attachment','%s_%s' % (image.id, hashlib.sha1(image.sudo().write_date or image.sudo().create_date or '').hexdigest()[0:7]),
                 'datas', werkzeug.wrappers.Response(),250,250,cache=STATIC_CACHE)
-
     # this controller will control url: /imageurl/id/<recipe_id>?url=<your url> or /imageurl/ref/<recipe_ref>?url=<your url>
     @http.route(['/imageurl/id/<model("image.recipe"):recipe>', '/imageurl/ref/<string:recipe_ref>'], type='http', auth="public", website=True)
     def view_url(self, recipe=None, recipe_ref=None, **post):
@@ -107,7 +103,7 @@ class website_imagemagic(http.Controller):
             recipe = request.env.ref(recipe_ref) # 'imagemagick.my_recipe'
         return recipe.send_file(field=field, model=model, id=int(id))
 
-    # this controller will control url: /website/imagemagick/model_id/field_id/obj_id/recipe_id
+   # this controller will control url: /website/imagemagick/model_id/field_id/obj_id/recipe_id
     @http.route([
         '/website/imagemagick/<model>/<field>/<id>/<model("image.recipe"):recipe>',
         ], type='http', auth="public", website=True, multilang=False)
@@ -241,7 +237,7 @@ class website(models.Model):
             return recipe.sudo().send_file(field=field,model=model,id=id)
         if 'website_published' in o.fields_get().keys() and o.website_published == True:
             if user.has_group('base.group_website_publisher') or recipe.website_published == True:
-                return recipe.sudo().send_file(field=field, model=model, id=id)
+               return recipe.sudo().send_file(field=field, model=model, id=id)
         return recipe.send_file(field=field,model=model,id=id)
 
         record = self.env[model].browse(id)
@@ -296,7 +292,7 @@ class website(models.Model):
     @api.model
     def imagefield_hash(self, model, field, id, recipe):
         """Returns a local url that points to the image field of a given browse record, run through an imagemagick recipe.
-        """
+         """
         record = self.env[model].sudo().browse(id)
         sudo_recipe = self.env.ref(recipe).sudo()
         txt = f"""{
@@ -306,12 +302,11 @@ class website(models.Model):
             id }{
             sudo_recipe.id }"""
         hashtxt = hashlib.sha1(txt.encode('utf-8')).hexdigest()[0:7]
-
+        hashtxt = hashlib.sha1('%s%s%s%s%s' % (
         try:
             device_type = request.session.get('device_type','md')
         except:
             device_type = 'md'
-
         return '/imagefield/{model}/{field}/{id}/ref/{recipe}/image/{file_name}'.format(
             model=model, field=field, id=id, recipe=recipe,
             file_name='%s-%s.%s' % (
@@ -332,30 +327,26 @@ class image_recipe(models.Model):
     _description = 'TODO'
 
     test = fields.Binary(compute='compute_test')
-
     param_list = fields.Char(compute='_params')
     website_published =fields.Boolean(string="Published", default = True)
     description = fields.Text(string="Description")
     image_format = fields.Selection([('progressive_jpeg', 'Progressive JPEG'),('jpeg','Jpeg'),('jp2','JPEG 2000'),('png','PNG'),('GIF','gif'),('webp','WebP')],string='Image Format')
-    color = fields.Integer(string='Color Index')
     name = fields.Char(string='Name')
     recipe = fields.Text(string='Recipe')
     param_ids = fields.One2many(comodel_name='image.recipe.param', inverse_name='recipe_id', string='Recipes')
     state_id = fields.Many2one(comodel_name='image.recipe.state', string='State' ) # , default=_default_state_id)
     image = fields.Binary(compute='_image')
     external_id = fields.Char(string='External ID')
-
     def compute_test(self):
         time.sleep(5)
-
+     @api.one
     def _default_state_id(self):
         for state in self:
             return state.env.ref('website_imagemagick.image_recipe_state_draft').id if state.env.ref('website_imagemagick.image_recipe_state_draft') else None
-
+         return self.env.ref('website_imagemagick.image_recipe_state_draft').id if self.env.ref('website_imagemagick.image_recipe_state_draft') else None
     def _params(self):
         for params in self:
             params.param_list = ','.join(params.param_ids.mapped(lambda p: '%s: %s' % (p.name,p.value)))
-
     def _image(self):
         for image_ in self:
             try:
@@ -368,8 +359,7 @@ class image_recipe(models.Model):
                 e = sys.exc_info()
                 message = '\n%s' % ''.join(traceback.format_exception(e[0], e[1], e[2]))
                 _logger.error(message)
-
-    def get_external_id(self):
+     def get_external_id(self):
         for ext_id in self:
             external_id = ext_id.env['ir.model.data'].search([('model', '=', 'image.recipe'), ('res_id', '=', ext_id.id)])
             if not external_id:
@@ -410,13 +400,9 @@ class image_recipe(models.Model):
         if data:
             return Image(blob=data.decode('base64'))
         return Image(filename='/'.join(get_module_path('/web/static/src/img/foo.png'.split('/')[1]).split('/')[0:-1]) + '/web/static/src/img/placeholder.png')
-
-
-    def url_to_img(self, url):  # return an image object while filename is an url
+     def url_to_img(self, url):  # return an image object while filename is an url
         return Image(filename=url)
-
-
-    def get_mtime(self, attachment):    # return a last modified time of an image
+     def get_mtime(self, attachment):    # return a last modified time of an image
         if attachment.write_date > self.write_date:
             return attachment.write_date
         return self.write_date
@@ -430,7 +416,6 @@ class image_recipe(models.Model):
             if not o:
                 return http.send_file(BytesIO(self.run(Image(filename=get_module_path('web') + '/static/src/img/placeholder.png')).make_blob(format=self.image_format if self.image_format else 'png')), mimetype=mimetype)
             o = o[0]
-
             if self.image_format == 'progressive_jpeg':
                 unique_filename = str(uuid.uuid4())
                 image = self.run(Image(blob=codecs.decode(o[field], 'base64')))
@@ -445,14 +430,13 @@ class image_recipe(models.Model):
                 return http.send_file(img, mimetype=mimetype, filename=field)
             else:
                 return http.send_file(BytesIO(self.run(Image(blob=codecs.decode(o[field], 'base64'))).make_blob(format=self.image_format or 'jpg')), mimetype=mimetype, filename=field)
-
+            #_logger.warning('<<<<<<<<<<<<<< data >>>>>>>>>>>>>>>>: %s' % o)
         if attachment:
             #_logger.warning('<<<<<<<<<<<<<< attachment >>>>>>>>>>>>>>>>: %s' % attachment)
             # ~ return http.send_file(BytesIO(self.run(Image(blob=codecs.decode(o[field], 'base64'))).make_blob(format=self.image_format or 'png')), mimetype=mimetype, filename=attachment.datas_fname, mtime=self.get_mtime(attachment))
             return http.send_file(BytesIO(self.run(self.attachment_to_img(attachment)).make_blob(format=self.image_format or 'png')), mimetype=mimetype, filename=attachment.datas_fname, mtime=self.get_mtime(attachment))
         #~ return http.send_file(self.run(self.url_to_img(url)), filename=url)
         return http.send_file(BytesIO(self.run(Image(filename=url)).make_blob(format=self.image_format or 'png')),mimetype=mimetype)
-
     @api.model
     def get_mimetype(self, attachment=None, model=None, field=None, id=None):
         res = 'image/%s' % (self.image_format if self.image_format else 'png')
@@ -463,7 +447,6 @@ class image_recipe(models.Model):
         if self.image_format == "progressive_jpg":
             res = "image/jpg"
         return res
-
     def run(self, image, **kwargs):   # return a image with specified recipe
         kwargs.update({p.name: p.value for p in self.param_ids})
         kwargs.update({p.name: p.value for p in self.param_ids.filtered(lambda p: p.device_type == request.session.get('device_type','md'))})    #get parameters from recipe
@@ -471,7 +454,6 @@ class image_recipe(models.Model):
         import time
         # ~ company = request.website_id.company_id if request.website_id else self.env.user.company_id
         company = self.env.user.company_id
-
         MagickEvaluateImage = wand.api.library.MagickEvaluateImage
         MagickEvaluateImage.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_double]
         def convert(self, operation, argument):
@@ -479,7 +461,7 @@ class image_recipe(models.Model):
                 self.wand,
                 wand.image.EVALUATE_OPS.index(operation),
                 self.quantum_range * float(argument))
-
+        company = request.website.company_id if request.website else self.env.user.company_id
         kwargs.update({
             'time': time,
             'Image': Image,
@@ -516,11 +498,12 @@ class set_device_type(http.Controller):
             request.session['device_type'] = 'md'
         else:
             request.session['device_type'] = 'lg'
+       _logger.warn('Device type: %s' %request.session.get('device_type'))
 
 
 class image_recipe_param(models.Model):
-    _name = "image.recipe.param"
-    _description = """
+   _name = "image.recipe.param"
+   _description = """
    Device Type == Extra small devices    Small devices       Medium devices      Large devices
                    Phones (<768px)        Tablets (≥768px)    Desktops (≥992px)   Desktops (≥1200px)
    column ca       auto                     ~62px                   ~81px            ~97px

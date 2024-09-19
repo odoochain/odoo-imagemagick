@@ -1,13 +1,11 @@
-odoo.define('website_imagemagick.snippets.editor', function (require) {
-'use strict';
-
-var ajax = require("web.ajax");
-var options = require('web_editor.snippets.options');
-
+odoo.define('website_imagemagick.snippets.editor',function (require) {
+'usestrict';
+varajax = require("web.ajax");
+varoptions = require('web_editor.snippets.options');
+varwebsite = openerp.website;
 var img_src = ''; // img src
 var current_taget = null;
-
-options.transform = options.Class.extend({
+options.transform= options.Class.extend({
     start: function () {
         var self = this;
         this._super();
@@ -97,5 +95,4 @@ options.transform = options.Class.extend({
             }
         }
     }
-});
 });
