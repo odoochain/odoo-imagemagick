@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>-
-<data noupdate="1">
+<odoo>
+    <data noupdate="1">
 
         <!-- image recipe kanban view -->
         <record id="image_recipe_kanban_view" model="ir.ui.view">
@@ -40,6 +40,7 @@
                                     <a type="open"><img t-att-src="kanban_image('image.recipe', 'image', record.id.value)" style="max-width: 200px; max-height: 200px;" alt="Example image"/></a>
                                 </div>
                                 <div class="oe_clear"></div>
+                            </div>
                         </t>
                     </templates>
                 </kanban>
@@ -54,7 +55,7 @@
             <field name="arch" type="xml">
                 <form string="Image Recipe">
                     <header>
-                       <field name="state_id" widget="statusbar" clickable="True"/>
+                        <field name="state_id" widget="statusbar" clickable="true"/>
                     </header>
                     <sheet string="Image Recipe">
                         <h1>
@@ -63,6 +64,7 @@
                         <div class="oe_left">
                             <field name="website_published" class="pull-right" widget="website_button"/>
                         </div>
+
                         <group>
                             <group>
                                 <field name="external_id"/>
@@ -105,7 +107,7 @@
                 <tree>
                     <field name="name"/>
                     <field name="param_list"/>
-                    <!-- <field name="website_published"/> -->
+                <!--     <field name="website_published"/> -->
                 </tree>
             </field>
         </record>
@@ -123,7 +125,7 @@
                         </h1>
                         <group>
                             <field name="value"/>
-                            <field name="device_type"/>
+                            <field name="device_type"/>ca
                             <field name="recipe_id"/>
                         </group>
                     </sheet>
@@ -146,7 +148,7 @@
             </field>
         </record>
 
-        <!-- recipe action window -->
+         <!-- recipe action window  -->
         <record id="action_image_recipe_all_view" model="ir.actions.act_window">
             <field name="name">Image Recipe</field>
             <field name="res_model">image.recipe</field>
@@ -155,30 +157,33 @@
             <field name="view_id" ref="image_recipe_kanban_view"/>
             <field name="context">{"search_default_current": 1}</field>
         </record>
-        
+
+       
         <menuitem id="menu_catalog_image_magick" name="ImageMagick"
         parent="website.menu_website_configuration" sequence="100"
         groups="website.group_website_designer"/>
          <menuitem id="menu_image_recipe_all_view" name="Image Recipe" parent="menu_catalog_image_magick" sequence="100" action="action_image_recipe_all_view"/>
-         <menuitem id="menu_image_recipe_all_view" name="Image Recipe" parent="base.menu_config" sequence="100" action="action_image_recipe_all_view"/>
+
 
     </data>
     <data>
         <!-- Inform server of Device Type for responsive recipe -->
-           <!-- <template id="assets_frontend" inherit_id="website.assets_frontend">
+<!--
+        <template id="assets_frontend" inherit_id="website.assets_frontend">
             <xpath expr="." position="inside">
                 <script type="text/javascript">
-                   odoo.define('website_imagemagick.device_tupe', function (require) {
-                   'use strict';
-                   var ajax = require("web.ajax");
-                   ajax.jsonRpc("/set_device_type", "call", {
+                    odoo.define('website_imagemagick.device_tupe', function (require) {
+                    'use strict';
+                    var ajax = require("web.ajax");
+                    ajax.jsonRpc("/set_device_type", "call", {
                         width: $(window).width()
                     }).done(function(data){
                     });
-                   });
+                    });
                 </script>
             </xpath>
         </template>
-        --->
+-->
+
     </data>
 </odoo>

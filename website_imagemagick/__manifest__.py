@@ -18,26 +18,22 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
 {
     'name': 'Image: Imagemagick: Website',
     'version': '1.0',
-    # Version ledger: 14.0 = Odoo version. 1 = Major. Non regressionable code. 2 = Minor. New features that are regressionable. 3 = Bug fixes
     'summary': 'Advanced Image handling',
     'category': 'Technical',
-    'description': """
-Advanced Image handling
-=======================
+    'description': 
+    """
+        Advanced Image handling
+        =======================
 
-* Use responsive avare recipies for image handling
-* Web Editor Tools for end user, choose recipe for your images as you are creating pages
-* Tools for qweb use
+        * Use responsive avare recipies for image handling
+        * Web Editor Tools for end user, choose recipe for your images as you are creating pages
+        * Tools for qweb use
 
- https://graphicdesign.stackexchange.com/questions/39430/using-imagemagick-to-create-vibrant-images
-
-
-""",
-    #'sequence': '1',
+        https://graphicdesign.stackexchange.com/questions/39430/using-imagemagick-to-create-vibrant-images
+    """,
     'author': 'Vertel AB',
     'website': 'https://vertel.se/apps/odoo-imagemagick/website_imagemagick',
     'images': ['static/description/banner.png'], # 560x280 px.

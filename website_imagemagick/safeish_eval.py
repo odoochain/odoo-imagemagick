@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#   Odoo, Open Source Enterprise Management Solution, third party addon
-#   Copyright (C) 2014-2017 Vertel AB (<http://vertel.se>).
+#    Odoo, Open Source Enterprise Management Solution, third party addon
+#    Copyright (C) 2014-2017 Vertel AB (<http://vertel.se>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,6 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+
 import odoo
 from odoo.tools.safe_eval import _SAFE_OPCODES, test_expr, _import
 from odoo.tools.misc import ustr
@@ -31,7 +32,8 @@ _logger = logging.getLogger(__name__)
 _SAFE_OPCODES.add(opmap['STORE_ATTR'])
 
 def safe_eval(expr, globals_dict=None, locals_dict=None, mode="eval", nocopy=False, locals_builtins=False):
-    """safe_eval(expression[, globals[, locals[, mode[, nocopy]]]]) -> result   
+    """safe_eval(expression[, globals[, locals[, mode[, nocopy]]]]) -> result
+
     System-restricted Python expression evaluation
 
     Evaluates a string that contains an expression that mostly
